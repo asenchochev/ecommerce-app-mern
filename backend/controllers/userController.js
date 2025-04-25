@@ -40,7 +40,7 @@ const loginUser = async (req, res) => {
             user: {
                 id: user._id,
                 email: user.email,
-                name: user.name, 
+                name: user.name,
             },
         });
     } catch (error) {
@@ -49,8 +49,7 @@ const loginUser = async (req, res) => {
     }
 };
 
-
-// Route for user registration 
+// Route for user registration
 const registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -105,11 +104,7 @@ const registerUser = async (req, res) => {
     }
 };
 
-
 // Route for admin login
-import jwt from 'jsonwebtoken';
-import validator from 'validator';
-
 const adminLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -152,5 +147,3 @@ const adminLogin = async (req, res) => {
 
 // Exporting the functions
 export { loginUser, registerUser, adminLogin };
-
-

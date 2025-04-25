@@ -1,5 +1,5 @@
-import orderModel from "../models/orderModel.js";
-import UserModel from "../models/userModel.js";
+import orderModel from "../models/Order.js";
+import UserModel from "../models/User.js";
 import Stripe from 'stripe'
 import Razorpay from 'razorpay';
 

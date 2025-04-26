@@ -4,116 +4,67 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const Login = () => {
-  const [mode, setMode] = useState('login');
+  const [currentState, setCurrentState] = useState('Login');
   const { token, setToken, navigate, backendUrl } = useContext(ShopContext);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmitHandler = async (event) => {
+    event.preventDefault(); 
     try {
-      if (mode === 'register') {
-        const res = await axios.post(`${backendUrl}/api/user/register`, {
-          name,
-          email,
-          password,
-        });
-        if (res.data.success) {
-          toast.success('Registration successful!');
-          setMode('login');
+      if (currentState === 'Sign up') {
+        const response = await axios.post(backendUrl + '/api/user/register', { name, email, password });
+        if (response.data.success) {
+          localStorage.setItem('token', response.data.token);
+          toast.success('Registration successful! 🎉');
+          setCurrentState('Login'); // Redirect to login after sign-up
         } else {
-          toast.error(res.data.message);
+          toast.error(response.data.message);
         }
       } else {
-        const res = await axios.post(`${backendUrl}/api/user/login`, {
-          email,
-          password,
-        });
-        if (res.data.success) {
-          setToken(res.data.token);
-          localStorage.setItem('token', res.data.token);
-          toast.success('Login successful!');
+        const response = await axios.post(backendUrl + '/api/user/login', { email, password });
+        if (response.data.success) {
+          setToken(response.data.token);
+          localStorage.setItem('token', response.data.token);
+          toast.success('Login successful! 🎉');
         } else {
-          toast.error(res.data.message);
+          toast.error(response.data.message);
         }
       }
-    } catch (err) {
-      console.log(err);
-      toast.error('Something went wrong!');
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
     }
   };
 
-  useEffect(() => {
+  useEffect(() => {  
     if (token) {
       navigate('/');
     }
   }, [token]);
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="w-full max-w-sm mx-auto mt-28 px-6 py-8 border border-gray-200 shadow-lg rounded-2xl space-y-5"
-    >
-      <h2 className="text-center text-3xl font-semibold text-gray-900">
-        {mode === 'login' ? 'Sign In' : 'Sign Up'}
-      </h2>
-      <p className="text-center text-gray-500 text-sm">
-        {mode === 'login' ? 'Welcome back' : 'Create your account'}
-      </p>
-
-      {mode === 'register' && (
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Full Name</label>
-          <input
-            type="text"
-            className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
+    <form onSubmit={onSubmitHandler} className='flex flex-col items-center w-[90%] sm:max-w-96 m-auto mt-14 gap-4 text-gray-800'>
+      <div className='inline-flex items-center gap-2 mb-2 mt-10'>
+        <p className='prata-regular text-3xl'>{currentState}</p>
+        <hr className='border-none h-[1.5px] w-8 bg-gray-800' />
+      </div>
+      {currentState === 'Login' ? '' : (
+        <input onChange={(e) => setName(e.target.value)} value={name} type="text" className='w-full px-3 py-2 border border-gray-800' placeholder='Name' required />
       )}
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Email</label>
-        <input
-          type="email"
-          className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+      <input onChange={(e) => setEmail(e.target.value)} value={email} type="email" className='w-full px-3 py-2 border border-gray-800' placeholder='Email' required />
+      <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" className='w-full px-3 py-2 border border-gray-800' placeholder='Password' required />
+      <div className='w-full flex justify-between text-sm mt-[-8px]'>
+        <p className='cursor-pointer'>Forgot your password?</p>
+        {currentState === 'Login' ? (
+          <p onClick={() => setCurrentState('Sign up')} className='cursor-pointer'>Create account</p>
+        ) : (
+          <p onClick={() => setCurrentState('Login')} className='cursor-pointer'>Login Here</p>
+        )}
       </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Password</label>
-        <input
-          type="password"
-          className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-
-      <div className="flex justify-between text-sm text-gray-600">
-        <span className="hover:underline cursor-pointer">Forgot password?</span>
-        <span
-          onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
-          className="hover:underline cursor-pointer"
-        >
-          {mode === 'login' ? 'Create account' : 'Already have an account?'}
-        </span>
-      </div>
-
-      <button
-        type="submit"
-        className="w-full bg-black text-white py-2 rounded-lg font-medium hover:bg-gray-900 transition"
-      >
-        {mode === 'login' ? 'Sign In' : 'Sign Up'}
-      </button>
+      <button className='bg-black text-white font-light px-8 py-2 mt-4'>{currentState === 'Login' ? 'Sign In' : 'Sign up'}</button>
     </form>
   );
 };

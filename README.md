@@ -68,7 +68,11 @@ Create a `.env` file in the `backend` folder and add:
 PORT=5000
 MONGO_URI=your_mongo_connection_string
 JWT_SECRET=your_secret_key
-STRIPE_SECRET_KEY=your_stripe_key
+CLOUDINARY_SECRET_KEY= your_cloudinary_key
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_NAME=your_cloud_name
+ADMIN_EMAIL=your_email
+ADMIN_PASSWORD=your_password
 ```
 
 5. **Run the App**

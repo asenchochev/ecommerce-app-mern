@@ -24,12 +24,6 @@ MongoDB, Express.js, React.js, and Node.js.
 
 ---
 
-## 📸 Preview
-
-> (You can add screenshots or demo GIFs here)
-
----
-
 ## 🚀 Technologies Used
 
 | Tech          | Description                          |
@@ -48,8 +42,8 @@ MongoDB, Express.js, React.js, and Node.js.
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/your-username/mern-ecommerce.git
-cd mern-ecommerce
+git clone https://github.com/your-username/ecommerce-app-mern.git
+cd ecomerce-app-mern
 ```
 
 2. **Install backend dependencies**
@@ -107,8 +101,3 @@ Built with 💻 by [Asen Chochev](https://github.com/asenchochev)
 
 ---
 
-## 📃 License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
